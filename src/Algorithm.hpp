@@ -2,6 +2,7 @@
 #define ALGORITHM_H
 
 #include <memory>
+#include <vector>
 #include "Kernel.hpp"
 
 namespace exw_ngp {

@@ -39,8 +39,14 @@ make -j 8
 
 - `EXAWIND_TEST_VIRTUALS` (default: ON) Enables device virtual test classes. Set
   `OFF` to test basic build on AMD HIP/Intel.
+  
+- `EXAWIND_USE_EXTERNAL_KOKKOS` (default: OFF**: Provide an external installation
+  of Kokkos instead of using the submodule. You should still provide appropriate
+  compilers and compiler options to CMake.
 
 ## Current status
+
+**as of Feb. 26, 2021**
 
 - Will compile and execute fine on host (GCC, Intel, LLVM/Clang) compilers. 
 
