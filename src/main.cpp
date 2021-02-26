@@ -25,7 +25,7 @@ void print_kokkos_configuration()
     std::cout << "  Kokkos::OpenMPTarget is available" << std::endl;
 #endif
 
-#ifndef KOKKOS_ENABLE_OPENMPTARGET
+#if defined(KOKKOS_ENABLE_CUDA) || defined(KOKKOS_ENABLE_HIP)
     std::stringstream ss;
     Kokkos::DefaultExecutionSpace::print_configuration(ss);
     const std::string& sinfo = ss.str();
@@ -37,7 +37,7 @@ void print_kokkos_configuration()
     }
     std::cout << std::endl;
 #else
-    std::cout << "Default execution space = " <<
+    std::cout << "Default execution space = "
               << Kokkos::DefaultExecutionSpace::name()
               << std::endl << std::endl;
 #endif
