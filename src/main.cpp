@@ -25,6 +25,7 @@ void print_kokkos_configuration()
     std::cout << "  Kokkos::OpenMPTarget is available" << std::endl;
 #endif
 
+#ifndef KOKKOS_ENABLE_OPENMPTARGET
     std::stringstream ss;
     Kokkos::DefaultExecutionSpace::print_configuration(ss);
     const std::string& sinfo = ss.str();
@@ -35,6 +36,11 @@ void print_kokkos_configuration()
         std::cout << "Assuming default space = host space" << std::endl;
     }
     std::cout << std::endl;
+#else
+    std::cout << "Default execution space = " <<
+              << Kokkos::DefaultExecutionSpace::name()
+              << std::endl << std::endl;
+#endif
 }
 
 void test_algorithm()
