@@ -10,8 +10,8 @@ namespace exw_ngp {
 using MemSpace = Kokkos::CudaSpace;
 using UVMSpace = Kokkos::CudaUVMSpace;
 #elif defined(KOKKOS_ENABLE_HIP)
-using MemSpace = Kokkos::HIPSpace;
-using UVMSpace = Kokkos::HIPSpace;
+using MemSpace = Kokkos::Experimental::HIPSpace;
+using UVMSpace = Kokkos::Experimental::HIPSpace;
 #elif defined(KOKKOS_HAVE_OPENMP)
 using MemSpace = Kokkos::OpenMP;
 using UVMSpace = Kokkos::OpenMP;
