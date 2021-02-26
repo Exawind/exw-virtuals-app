@@ -76,6 +76,7 @@ public:
 
     NodeKernel(double data) : m_data(data) {}
 
+    KOKKOS_FUNCTION
     virtual double operator()() final
     {
         return multiplier * m_data;
@@ -98,6 +99,7 @@ public:
 
     EdgeKernel(double data) : m_data(data) {}
 
+    KOKKOS_FUNCTION
     virtual double operator()() final
     {
         return multiplier * m_data;
@@ -120,6 +122,7 @@ public:
 
     ElemKernel(double data) : m_data(data) {}
 
+    KOKKOS_FUNCTION
     virtual double operator()() final
     {
         return multiplier * m_data;
