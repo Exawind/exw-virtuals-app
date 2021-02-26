@@ -6,22 +6,16 @@
 
 namespace exw_ngp {
 
+using HostSpace = Kokkos::DefaultHostExecutionSpace;
+using DeviceSpace = Kokkos::DefaultExecutionSpace;
+
 #ifdef KOKKOS_ENABLE_CUDA
 using MemSpace = Kokkos::CudaSpace;
 using UVMSpace = Kokkos::CudaUVMSpace;
-#elif defined(KOKKOS_ENABLE_HIP)
-using MemSpace = Kokkos::Experimental::HIPSpace;
-using UVMSpace = Kokkos::Experimental::HIPSpace;
-#elif defined(KOKKOS_HAVE_OPENMP)
-using MemSpace = Kokkos::OpenMP;
-using UVMSpace = Kokkos::OpenMP;
 #else
-using MemSpace = Kokkos::HostSpace;
-using UVMSpace = Kokkos::HostSpace;
+using MemSpace = Kokkos::DefaultExecutionSpace::memory_space;
+using UVMSpace = Kokkos::DefaultExecutionSpace::memory_space;
 #endif
-
-using HostSpace = Kokkos::DefaultHostExecutionSpace;
-using DeviceSpace = Kokkos::DefaultExecutionSpace;
 
 template <typename T, typename MemorySpace = MemSpace>
 inline T* kokkos_malloc_on_device(const std::string& debug_name)
