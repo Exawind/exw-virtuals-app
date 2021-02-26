@@ -2,7 +2,9 @@
 #include <sstream>
 
 #include "ngp_instance.hpp"
+#ifdef EXAWIND_TEST_VIRTUALS
 #include "Algorithm.hpp"
+#endif
 
 void print_kokkos_configuration()
 {
@@ -30,14 +32,14 @@ void print_kokkos_configuration()
         std::cout << "Kokkos default execution space: " << std::endl;
         std::cout << sinfo << std::endl;
     } else {
-        std::cout << "Assuming default space = host space"
-                  << std::endl;
+        std::cout << "Assuming default space = host space" << std::endl;
     }
     std::cout << std::endl;
 }
 
 void test_algorithm()
 {
+#ifdef EXAWIND_TEST_VIRTUALS
     exw_ngp::Algorithm alg;
     std::cout << "Testing Algorithm with virtual kernel execution" << std::endl;
     alg.add_kernel<exw_ngp::NodeKernel>(10.0);
@@ -45,6 +47,10 @@ void test_algorithm()
     alg.add_kernel<exw_ngp::ElemKernel>(30.0);
     std::cout << "  Registered 3 kernels" << std::endl;
     alg.execute();
+#else
+    std::cout << "ExaWind virtual functions were disabled at compile time. Exiting!"
+              << std::endl;
+#endif
 }
 
 int main(int argc, char** argv)

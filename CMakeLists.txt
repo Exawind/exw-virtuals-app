@@ -4,6 +4,8 @@ project(ExwVirtuals CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL
   "Create compile commands database")
 
+option(EXAWIND_TEST_VIRTUALS "Activate testing virtual device functions" ON)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
