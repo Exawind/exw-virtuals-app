@@ -34,3 +34,31 @@ make -j 8
 # Run executable
 ./exw_virtuals
 ```
+
+### CMake options
+
+- `EXAWIND_TEST_VIRTUALS` (default: ON) Enables device virtual test classes. Set
+  `OFF` to test basic build on AMD HIP/Intel.
+
+## Current status
+
+- Will compile and execute fine on host (GCC, Intel, LLVM/Clang) compilers. 
+
+- Will compile and execute fine on NVIDIA CUDA (v10.2.89 or later)
+
+- Generates compile time errors in AMD HIP
+
+- Generates compile time errors in Intel OneAPI SYCL/dpcpp
+
+- Generates runtime segfault with Intel OpenMP target
+
+To test builds on AMD HIP or Intel OneAPI, you can disable virtual functions
+with the following configuration option:
+
+```
+# For AMD HIP
+../scripts/configure-hip.sh -DEXAWIND_TEST_VIRTUALS=OFF
+
+# For Intel OneAPI SYCL/DPC++
+../scripts/configure-intel-sycl.sh -DEXAWIND_TEST_VIRTUALS=OFF
+```
