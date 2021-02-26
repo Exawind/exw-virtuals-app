@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 exw_virtuals_configure ()
 {
