@@ -131,7 +131,7 @@ jobs:
           source /opt/intel/oneapi/setvars.sh
           set -e
           cmake -Bbuild \
-            -DCMAKE_CXX_COMPILER=$(which icpx) \
+            -DCMAKE_CXX_COMPILER=$(which dpcpp) \
             -DCMAKE_CXX_STANDARD:STRING="17" \
             -DKokkos_ENABLE_SERIAL=ON \
             -DKokkos_ENABLE_OPENMP=OFF \
