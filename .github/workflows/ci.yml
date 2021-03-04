@@ -67,14 +67,13 @@ jobs:
           wget -q -O - http://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
           echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' | sudo tee /etc/apt/sources.list.d/rocm.list
           sudo apt-get update
-          sudo apt-get install -y libopenmpi-dev rocm-dev rocm-libs
+          sudo apt-get install -y rocm-dev
       - name: Configure and build
         run: |
           echo 'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin' | sudo tee -a /etc/profile.d/rocm.sh
           source /etc/profile.d/rocm.sh
           cmake -Bbuild \
             -DCMAKE_CXX_COMPILER=$(which hipcc) \
-            -DCMAKE_C_COMPILER=$(which hipcc) \
             -DCMAKE_CXX_STANDARD:STRING="17" \
             -DKokkos_ENABLE_SERIAL=ON \
             -DKokkos_ENABLE_OPENMP=OFF \
@@ -82,5 +81,64 @@ jobs:
             -DKokkos_ENABLE_HIP=ON \
             -DKokkos_ENABLE_OPENMPTARGET=OFF \
             -DKokkos_ARCH_VEGA906=ON \
+            -DEXAWIND_TEST_VIRTUALS=OFF .
+          cmake --build build -- -j $(nproc)
+  openmptarget-build:
+    runs-on: ubuntu-latest
+    name: Intel OneAPI OpenMPTarget
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare DPC++ environment
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          sudo wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+          sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+          echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends intel-oneapi-dpcpp-cpp-compiler
+      - name: Configure and build
+        run: |
+          set +e
+          source /opt/intel/oneapi/setvars.sh
+          set -e
+          cmake -Bbuild \
+            -DCMAKE_CXX_COMPILER=$(which icpx) \
+            -DCMAKE_CXX_STANDARD:STRING="17" \
+            -DKokkos_ENABLE_SERIAL=ON \
+            -DKokkos_ENABLE_OPENMP=OFF \
+            -DKokkos_ENABLE_CUDA=OFF \
+            -DKokkos_ENABLE_HIP=OFF \
+            -DKokkos_ENABLE_OPENMPTARGET=ON \
+            -DKokkos_ARCH_INTEL_GEN=ON \
+            -DEXAWIND_TEST_VIRTUALS=OFF .
+          cmake --build build -- -j $(nproc)
+  sycl-build:
+    runs-on: ubuntu-latest
+    name: Intel OneAPI SYCL
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare DPC++ environment
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          sudo wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+          sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+          echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends intel-oneapi-dpcpp-cpp-compiler
+      - name: Configure and build
+        run: |
+          set +e
+          source /opt/intel/oneapi/setvars.sh
+          set -e
+          cmake -Bbuild \
+            -DCMAKE_CXX_COMPILER=$(which icpx) \
+            -DCMAKE_CXX_STANDARD:STRING="17" \
+            -DKokkos_ENABLE_SERIAL=ON \
+            -DKokkos_ENABLE_OPENMP=OFF \
+            -DKokkos_ENABLE_CUDA=OFF \
+            -DKokkos_ENABLE_HIP=OFF \
+            -DKokkos_ENABLE_OPENMPTARGET=OFF \
+            -DKokkos_ENABLE_SYCL=ON \
+            -DKokkos_ARCH_INTEL_GEN=ON \
             -DEXAWIND_TEST_VIRTUALS=OFF .
           cmake --build build -- -j $(nproc)
