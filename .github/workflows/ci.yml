@@ -112,33 +112,33 @@ jobs:
             -DKokkos_ARCH_INTEL_GEN=ON \
             -DEXAWIND_TEST_VIRTUALS=OFF .
           cmake --build build -- -j $(nproc)
-  sycl-build:
-    runs-on: ubuntu-latest
-    name: Intel OneAPI SYCL
-    steps:
-      - uses: actions/checkout@v2
-      - name: Prepare DPC++ environment
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-          sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
-          echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends intel-oneapi-dpcpp-cpp-compiler
-      - name: Configure and build
-        run: |
-          set +e
-          source /opt/intel/oneapi/setvars.sh
-          set -e
-          cmake -Bbuild \
-            -DCMAKE_CXX_COMPILER=$(which dpcpp) \
-            -DCMAKE_CXX_STANDARD:STRING="17" \
-            -DKokkos_ENABLE_SERIAL=ON \
-            -DKokkos_ENABLE_OPENMP=OFF \
-            -DKokkos_ENABLE_CUDA=OFF \
-            -DKokkos_ENABLE_HIP=OFF \
-            -DKokkos_ENABLE_OPENMPTARGET=OFF \
-            -DKokkos_ENABLE_SYCL=ON \
-            -DKokkos_ARCH_INTEL_GEN=ON \
-            -DEXAWIND_TEST_VIRTUALS=OFF .
-          cmake --build build -- -j $(nproc)
+  # sycl-build:
+  #   runs-on: ubuntu-latest
+  #   name: Intel OneAPI SYCL
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Prepare DPC++ environment
+  #       run: |
+  #         export DEBIAN_FRONTEND=noninteractive
+  #         sudo wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+  #         sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+  #         echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+  #         sudo apt-get update
+  #         sudo apt-get install -y --no-install-recommends intel-oneapi-dpcpp-cpp-compiler
+  #     - name: Configure and build
+  #       run: |
+  #         set +e
+  #         source /opt/intel/oneapi/setvars.sh
+  #         set -e
+  #         cmake -Bbuild \
+  #           -DCMAKE_CXX_COMPILER=$(which dpcpp) \
+  #           -DCMAKE_CXX_STANDARD:STRING="17" \
+  #           -DKokkos_ENABLE_SERIAL=ON \
+  #           -DKokkos_ENABLE_OPENMP=OFF \
+  #           -DKokkos_ENABLE_CUDA=OFF \
+  #           -DKokkos_ENABLE_HIP=OFF \
+  #           -DKokkos_ENABLE_OPENMPTARGET=OFF \
+  #           -DKokkos_ENABLE_SYCL=ON \
+  #           -DKokkos_ARCH_INTEL_GEN=ON \
+  #           -DEXAWIND_TEST_VIRTUALS=OFF .
+  #         cmake --build build -- -j $(nproc)
