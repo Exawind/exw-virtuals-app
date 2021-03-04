@@ -56,3 +56,31 @@ jobs:
             -DKokkos_ENABLE_CUDA_RELOCATABLE_DEVICE_CODE=ON \
             -DKokkos_ARCH_VOLTA70=ON .
           cmake --build build -- -j $(nproc)
+  hip-build:
+    runs-on: ubuntu-latest
+    name: AMD HIP/ROCm
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare HIP/ROCm environment
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          wget -q -O - http://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
+          echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' | sudo tee /etc/apt/sources.list.d/rocm.list
+          sudo apt-get update
+          sudo apt-get install -y libopenmpi-dev rocm-dev rocm-libs
+      - name: Configure and build
+        run: |
+          echo 'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bin' | sudo tee -a /etc/profile.d/rocm.sh
+          source /etc/profile.d/rocm.sh
+          cmake -Bbuild \
+            -DCMAKE_CXX_COMPILER=$(which hipcc) \
+            -DCMAKE_C_COMPILER=$(which hipcc) \
+            -DCMAKE_CXX_STANDARD:STRING="17" \
+            -DKokkos_ENABLE_SERIAL=ON \
+            -DKokkos_ENABLE_OPENMP=OFF \
+            -DKokkos_ENABLE_CUDA=OFF \
+            -DKokkos_ENABLE_HIP=ON \
+            -DKokkos_ENABLE_OPENMPTARGET=OFF \
+            -DKokkos_ARCH_VEGA906=ON \
+            -DEXAWIND_TEST_VIRTUALS=OFF .
+          cmake --build build -- -j $(nproc)
