@@ -11,11 +11,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(FetchContent)
+FetchContent_Declare(
+  kokkos
+  GIT_REPOSITORY https://github.com/kokkos/kokkos
+  GIT_TAG develop
+  )
+
 if (EXAWIND_USE_EXTERNAL_KOKKOS)
   find_package(Kokkos REQUIRED)
 else()
-set(EXW_KOKKOS_PATH "ext/kokkos")
-add_subdirectory(${EXW_KOKKOS_PATH})
+  FetchContent_MakeAvailable(kokkos)
 endif()
 
 add_executable(exw_virtuals)
