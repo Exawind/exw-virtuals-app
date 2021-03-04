@@ -4,7 +4,7 @@ exw_virtuals_configure ()
 {
     local exw_script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
     local exw_dir=$(dirname ${exw_script_dir})
-    local nvcc_wrapper=${EXAWIND_CUDA_WRAPPER:-${exw_dir}/ext/kokkos/bin/nvcc_wrapper}
+    local nvcc_wrapper=${EXAWIND_CUDA_WRAPPER:-${exw_dir}/bin/nvcc_wrapper}
     local extra_args="$@"
 
     local cmake_cmd=(

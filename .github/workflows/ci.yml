@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  host-build:
+    runs-on: ubuntu-latest
+    name: Host build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          cmake -Bbuild \
+            -DCMAKE_CXX_STANDARD:STRING="17" \
+            -DKokkos_ENABLE_SERIAL=ON \
+            -DKokkos_ENABLE_OPENMP=OFF \
+            -DKokkos_ENABLE_CUDA=OFF \
+            -DKokkos_ENABLE_HIP=OFF \
+            -DKokkos_ENABLE_OPENMPTARGET=OFF .
+      - name: Compile
+        run: |
+          cmake --build build -- -j $(nproc)
+      - name: Execute
+        run: |
+          cd build
+          ./exw_virtuals
