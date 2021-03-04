@@ -6,6 +6,7 @@ exw_virtuals_configure ()
 
     local cmake_cmd=(
         cmake
+        -DCMAKE_CXX_STANDARD:STRING="14"
         -DKokkos_ENABLE_SERIAL=ON
         -DKokkos_ENABLE_OPENMP=OFF
         -DKokkos_ENABLE_CUDA=OFF

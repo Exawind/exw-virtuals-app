@@ -8,6 +8,7 @@ exw_virtuals_configure ()
         cmake
         -DCMAKE_CXX_COMPILER=$(which hipcc)
         -DCMAKE_C_COMPILER=$(which hipcc)
+        -DCMAKE_CXX_STANDARD:STRING="17"
         -DKokkos_ENABLE_SERIAL=ON
         -DKokkos_ENABLE_OPENMP=OFF
         -DKokkos_ENABLE_CUDA=OFF
